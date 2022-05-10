@@ -2,8 +2,35 @@
 <html>
   <head>
     <title>Unix Final Project</title>
+    <style type="text/css">
+      body {
+        font-family:sans-serif;
+        background-color:black;
+        color:white;
+      }
+    </style>
   </head>
   <body>
     <h1>If you're seeing this, my CI/CD is down and I'm presumably running around like my hair is on fire</h1>
+    <p>
+      Hello! Today we'll be building a little MIDI player. It has three buttons;<br />
+      <ul>
+        <li>One that starts & stops recording</li>
+        <li>One to select the note - pressing it will repeatedly increase the pitch, cycling through from middle C to B</li>
+        <li>One to move to the next note, and (when recording is finished) to play the song.</li>
+      </ul>
+    </p>
+    <p>
+      It also makes use of two other components;
+      <ul>
+        <li>A piezo speaker for sound output</li>
+        <li>An LED to indicate when recording mode is active</li>
+      </ul>
+    </p>
+    <p>
+      You can find a TinkerCAD diagram of the project <a href="https://www.tinkercad.com/things/5sIg79zbN2R-fabulous-krunk-tumelo/editel?sharecode=6tsQis22N_7wdYnwUMwwU6fmKroLCo47vZ88-q7I9pk">here</a>, but to be honest, it makes the circuit look more complex than it actually is.<br />
+      Since all the components are wired up in parallel instead of in series, if you can wire up an LED, you'll have no trouble with this circuit.<br />
+      Effectively, you are connecting 3 buttons, each to a GPIO pin, an LED to a GPIO pin, and a piezo to a GPIO pin. Then, you connect all of their ground pins to a single rail, and that rail to the raspi ground. Couldn't be simpler!
+    </p>
   </body>
 </html>
