@@ -1,0 +1,174 @@
+<!doctype html>
+<html>
+     <head>
+          <script type="text/javascript">
+               var dict = {
+                    "la" : "if",
+                    "ala" : "!==",
+                    "lili" : "<",
+                    "anteala" : "==",
+                    "nimi" : "function",
+                    "jo" : "var",
+                    "toki" : "console.log",
+                    "en" : "&&",
+                    "li" : "&&",
+                    "e" : "&&",
+                    "wan" : "1",
+                    "tu" : "2",
+                    "tuwan" : "3",
+                    "tutu" : "4",
+                    "luka" : "5"
+               }
+               function parse() {
+                    document.getElementById("output").innerHTML = "";
+                    var input = document.getElementById("inp").value.toLowerCase();
+                    var lines = input.split("\n");
+                    for(var line = 0;line<lines.length;line++) {
+                         var tokens = lines[line].split(" ");
+                         var translated = "";
+                         var closeCond = false;
+                         var funcDef = false;
+                         var closeFunCall = false;
+                         for(var t = 0;t<tokens.length;t++) {
+                              if(t == 0) {
+                                   if(tokens[0] == "la") {
+                                        translated += "if (";
+                                        closeCond = true;
+                                   } else if(tokens[0] == "nimi") {
+                                        translated += "function ";
+                                        funcDef = true;
+                                   } else if(tokens[0] == "tenpo") {
+                                        if(tokens[1] == "ala") {
+                                             translated += "}";
+                                             t++;
+                                        } else {
+                                             translated += "while (";
+                                             t++;
+                                             closeCond = true;
+                                        }
+                                   } else if(tokens[0] == "toki") {
+                                        translated += "console.log(";
+                                        closeFunCall = true;
+                                   } else {
+                                        if(dict[tokens[t]]) {
+                                             translated += " " + dict[tokens[t]] + " ";
+                                        } else {
+                                             translated += " " + tokens[t] + " ";
+                                        }
+                                   }
+                              } else if(t == 1) {
+                                   if(tokens[1] == "jo") {
+                                        translated = "var " + translated + " = ";
+                                   } else if(tokens[1] == "nimi") {
+                                        translated += "();";
+                                   } else {
+                                        if(dict[tokens[t]]) {
+                                             translated += " " + dict[tokens[t]] + " ";
+                                        } else {
+                                             translated += " " + tokens[t] + " ";
+                                        }
+                                   }
+                              } else {
+                                   if(dict[tokens[t]]) {
+                                        translated += " " + dict[tokens[t]] + " ";
+                                   } else {
+                                        translated += " " + tokens[t] + " ";
+                                   }
+                              }
+                         }
+                         if(closeCond) {
+                              translated += ") {";
+                         }
+                         if(funcDef) {
+                              translated += "() {";
+                         }
+                         if(closeFunCall) {
+                              translated += ");";
+                         }
+                         //console.log(translated);
+                         document.getElementById("output").innerHTML += translated + "<br />";
+                    }
+               }
+          </script>
+          <style type="text/css">
+               body {
+                    background-color:black;
+                    color:white;
+                    font-family:sans-serif;
+               }
+               td {
+                    border: 1px solid white;
+                    padding:4px;
+               }
+               code {
+                    background-color:grey;
+                    color:white;
+                    border:1px solid rgba(255,0,0,0.5);
+               }
+               textarea {
+                    width:400px;
+               }
+               table {
+                    width:400px;
+                    border:1px solid grey;
+               }
+               #output {
+                    font-family:monospace;
+               }
+          </style>
+     </head>
+     <body>
+          <p>
+               Supported terms:
+          </p>
+          <table>
+               <tr>
+                    <td>la</td><td><code>if</code></td>
+               </tr>
+               <tr>
+                    <td>nimi</td><td><code>function</code></td>
+               </tr>
+               <tr>
+                    <td>tenpo seme</td><td>start <code>while</code> - follow with conditions (on same line)</td>
+               </tr>
+               <tr>
+                    <td>tenpo ala</td><td>end <code>while</code> or <code>function</code> or <code>if-then</code> block</td>
+               </tr>
+               <tr>
+                    <td>toki</td><td><code>console.log</code> [whatever follows]</td>
+               </tr>
+               <tr>
+                    <td>jo</td><td><code>var</code></td>
+               </tr>
+               <tr>
+                    <td>lili</td><td><code>&lt;</code> - less than</td>
+               </tr>
+               <tr>
+                    <td>ala</td><td><code>!==</code> - not equal to</td>
+               </tr>
+               <tr>
+                    <td>en/li/e</td><td><code>&amp;&amp;</code> - logical AND</td>
+               </tr>
+               <tr>
+                    <td>anteala</td><td><code>==</code> - equal to</td>
+               </tr>
+               <tr>
+                    <td>wan</td><td>1</td>
+               </tr>
+               <tr>
+                    <td>tu</td><td>2</td>
+               </tr>
+               <tr>
+                    <td>tuwan</td><td>3</td>
+               </tr>
+               <tr>
+                    <td>tutu</td><td>4</td>
+               </tr>
+               <tr>
+                    <td>luka</td><td>5</td>
+               </tr>
+          </table>
+          <textarea rows=6 id="inp" onchange="parse()" placeholder="type in here"></textarea>
+          <div id="output"></div>
+     </body>
+</html>
